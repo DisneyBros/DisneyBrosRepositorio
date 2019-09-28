@@ -1,0 +1,17 @@
+body {
+    background: lightblue;
+    color:blue;
+    font-family: sans-serif;
+    font-size: 18px;
+}
+
+canvas {
+    background: white;
+    margin-right: 350px;
+    margin-left: 350px;
+}
+
+p {
+    text-align: center; 
+    color: black;
+}

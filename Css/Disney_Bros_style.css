@@ -1,0 +1,20 @@
+* { padding: 0; margin: 0; }
+
+body { 
+	background-color:blue; 
+	margin:0px; 
+	text-align:center; 
+}
+
+#gameScreen { 
+	width:640px; 
+	height:480px; 
+	margin:10px 10px 10px 10px; 
+	border:1px solid #888888; 
+	box-shadow:10px 10px 20px #888888;
+}
+#FondoNivelUno { background:  /*url("imagenes/toy.jpg")*/grey; display: block; margin: 0 auto; }
+#FondoNivelDos { background:  /*url("imagenes/toy.jpg")*/grey; display: block; margin: 0 auto; }
+#FondoNivelTres { background:  /*url("imagenes/toy.jpg")*/grey; display: block; margin: 0 auto; }
+#FondoNivelCuatro { background:  /*url("imagenes/toy.jpg")*/grey; display: block; margin: 0 auto; }
+#FondoNivelCinco { background:  /*url("imagenes/toy.jpg")*/grey; display: block; margin: 0 auto; }
