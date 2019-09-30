@@ -9,7 +9,7 @@
     <script src="Js/crono.js"></script>
  </head>
 
- <body onload="ConteoRegresivo()">
+ <body onload="ConteoRegresivo()" onkeydown="teclaPresionada(evento);">
 
     <p>FALTAN:</p>
     <p id="contador"></p>
@@ -25,9 +25,11 @@
  </body>
  
     <script type="text/javascript">//es el tag donde se empieza el codigo de js
-
+        
         var canvas = document.getElementById('myCanvas'); //se creo una variable, la cual llama a los id="myCanvas"
         var contexto = canvas.getContext('2d');//declara la dimension del juego 
+        //var evento= document.addEventListener(canvas, onkeydown, false); //Esto lo puse pq pedia alguna variable evento
+
 
         //PERSONAJE
 
@@ -45,7 +47,7 @@
         //CARGA EL JUEGO
 
         spriteSheet.onload = function(){//funcion que nos carga el juego
-            setInterval(actualizarJuego,1000/33);//actualiza el juego cada 33 veces en 1 segundo
+            setInterval(actualizarJuego,1000/300);//actualiza el juego cada 33 veces en 1 segundo
         }
 
         //MOVIMIENTOS
@@ -55,7 +57,7 @@
 
             if (indiceAnimacion<2 && tiempoAcumulado>1){//vuelve el tiempoAcumulado a 0 y el indiceAnimacion incrementa 1
                 tiempoAcumulado=0;
-                indiceAnimacion++;
+                //indiceAnimacion++;
             }
         }
 
@@ -64,7 +66,7 @@
 
             if (indiceAnimacion>0 && tiempoAcumulado>1){//vuelve el tiempoAcumulado a 0 y el indiceAnimacion descrementa 1
                 tiempoAcumulado=0;
-                indiceAnimacion--;
+                //indiceAnimacion--;
             }
         }
 
@@ -77,19 +79,25 @@
             contexto.fillRect(0, 0, 640, 480);//contorno del lienzo  
 
             var imagenActual = posiciones[indiceAnimacion];//imagen actual del movimiento del personaje
-            contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 25, 16, x, y, 25, 16);//se reedibuja el personaje 
+            contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 15, 30, x, y, 15, 30);//se reedibuja el personaje 
 
-            //var spriteSheet2 = new Image();
-            //spriteSheet2 = 'Imagenes/toy.jpg'
-            //contexto.drawImage(spriteSheet2); Acomodar aquí el fondo con una función
+            function fondo(){
+                var spritefondo = new Image();
+                spritefondo.src = 'Imagenes/toy.jpg'
+                contexto.drawImage(spritefondo, 0, 0, canvas.width, canvas.height, 0, 0, canvas.width, canvas.height); //Acomodar aquí el fondo con una función
+            }
+            
 
             moverPersonaje();
 
-                if (x>610){
+                if (x>625){
                     moverPersonaje=moverIzquierda;
                 }
+                if (x<0){
+                    moverPersonaje=moverDerecha;
+                }
                
-            x++;//se incrementa una posicion de la matriz
+            //x++;//se incrementa una posicion de la matriz
 
             //TIEMPO ENTRE CUADRO Y CUADRO
 
@@ -99,16 +107,16 @@
             tiempoAcumulado += delta;//a tiempoAcumulado se le suma delta es = a tiempoAcumulado = tiempoAcumulado + delta
         }
 
-        getImgData = function () {
-            return contexto.getImageData( 0, 0, canvas.width, canvas.height );
-        };
+        //getImgData = function () {
+            //return contexto.getImageData( 0, 0, canvas.width, canvas.height );
+        //};
 
         var spriteEnemigo = new Image(); //Imagen de personaje
         spriteEnemigo.src = 'Imagenes/cubos.jpg'
         var enemigo = function(){
             var x = 200; y = 200;
 
-            this.actualizar = function{
+            this.actualizar = function(){
                 y++;
             }
 
@@ -118,6 +126,52 @@
         }
 
         var miEnemigo = new enemigo();
+
+
+        //TECLAS
+
+        function KeyboardListener() { //enlista todas las teclas del teclado.
+
+            this.keychar = null; //si las teclas tenian algun valor o funcion, ya con esta funcion quedarian vacias.
+            this.getPressed = function () { //pregunta si esta presionada alguna tecla.
+            return this.keychar; //si alguna tecla esta presionada le devuelve su accion.
+            };
+            this.kUp = function () { //pregunta si esta presionada la tecla para saltar y si es asi, devolvera su accion
+            return String.fromCharCode(119); //Tecla w
+            };
+            this.kLeft = function () { //pregunta si esta presionada la tecla para caminar hacia la izquierda y si es asi, devolvera su accion
+            return String.fromCharCode(97); //Tecla a
+            };
+            this.kDown = function () { //pregunta si esta presionada la tecla para agacharse y si es asi, devolvera su accion
+            return String.fromCharCode(115); //Tecla s
+            };
+            this.kRight = function () { //pregunta si esta presionada la tecla para caminar hacia la derecha y si es asi, devolvera su accion
+            return String.fromCharCode(100); //Tecla d
+            };
+            this.kAgarra = function () { //pregunta si esta presionada la tecla para agarra un objeto y si es asi, devolvera su accion
+            return String.fromCharCode(79); //Tecla o
+            };
+            this.kTira = function () { //pregunta si esta presionada la tecla para tirar un objeto y si es asi, devolvera su accion
+            return String.fromCharCode(80); //Tecla p
+            };
+        }
+
+        function teclaPresionada(evento){
+            var tecla=evento.keyCode;
+ 
+ 
+            switch(tecla){
+                case kLeft:
+                    moverPersonaje=moverIzquierda;
+                    console.log("Izq");
+                    break;
+                
+                case kRight:
+                    moverPersonaje=moverDerecha;
+                    console.log("Der");
+                    break;
+            }
+        } 
 
     </script>
 

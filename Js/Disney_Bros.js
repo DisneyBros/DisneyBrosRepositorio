@@ -27,7 +27,7 @@ function KeyboardListener() { //enlista todas las teclas del teclado.
   this.kTira = function () { //pregunta si esta presionada la tecla para tirar un objeto y si es asi, devolvera su accion
   return String.fromCharCode(80); //Tecla p
  };
-
+}
 
 var spriteSheet = new Image(); //Imagen de personaje
 x = 1; y = 1; //Ubicacion del personaje en la pantalla 
