@@ -28,15 +28,16 @@
         
         var canvas = document.getElementById('myCanvas'); //se creo una variable, la cual llama a los id="myCanvas"
         var contexto = canvas.getContext('2d');//declara la dimension del juego 
+        
+        //DECLARAMOS VARIABLES
         var vida= true;
         var vuelta=false;
         var piso=400;
-        
         var xEnemigo=60
         var yEnemigo=400
 
         //FONDO
-        var fondo=new Image();
+        var fondo=new Image(); //objeto
         fondo.src='Imagenes/toy.jpg';
         function fotofondo(){
             contexto.drawImage(fondo, 0, 0, 640, 480);
@@ -61,25 +62,25 @@
 
         }
  
-         //TECLAS Y MOVIMIENTOS
+         //TECLAS Y MOVIMIENTOS DEL PERSONAJE
 
-         function teclaPresionada(event){
+         function teclaPresionada(event){//para que nos tome las teclas
             var tecla=event.keyCode;
  
-            if (tecla==68){
-                if (xmario<=624){
+            if (tecla==68){//izq
+                if (xmario<=623){//para que no se vaya de la pantalla
                     xmario=xmario+3;
                 }
             }
 
-            if (tecla==65){
-                if (xmario>0){
+            if (tecla==65){//der
+                if (xmario>0){//para que no se vaya de la pantalla
                     xmario=xmario-3;
                 }
             }
 
-            if (tecla==87){
-                if (ymario>piso-1){ //no entiendo xq salto==false y piso-1
+            if (tecla==87){//salto
+                if (ymario>piso-1){ //Comprueba que mario esta en el piso(para que no pueda seguir saltandfo en el aire)
                 ymario=ymario-120
                 }
             }            
@@ -92,7 +93,8 @@
             setInterval(actualizarJuego,1000/300);//actualiza el juego cada 300 cuadros en 1 segundo
         }
 
-        //Moviento enemigo
+        //MOVIMIENTO DEL ENEMIGO
+
         function movene(){
         //if (xEnemigo>=60 && xEnemigo<=200 && vuelta==false){
         //    xEnemigo=xEnemigo+0.5
@@ -102,59 +104,47 @@
         xEnemigo=(Math.random()*50)+40;
         }
 
-        //CONTADOR Y ACUMULADORES
-
-        indiceAnimacion = 0;//contador de inicio
-        ultimoCuadro = new Date().getTime();//valor numerico del ultimo momento en que se midio la hora del juego
-        tiempoAcumulado = 0;//acumulador de tiempo
-
         //BUCLE PRINCIPAL
 
         function actualizarJuego(){ //actualiza fondo y personaje
-            if (vida!=false){
+            
             contexto.fillRect(0, 0, 640, 480);//contorno del lienzo  
-            contexto.fillStyle = 'lightblue';//color del lienzo
+            if (vida!=false){
         
+                if ((xmario>xEnemigo-15 && xmario<xEnemigo+20) && (ymario<=yEnemigo && ymario>=yEnemigo)){//Para validar si mario esta vivo o no
+                    vida=false
+                }
+
+                fotofondo();
+                enemigo();
+                movene();
+
+                contexto.drawImage(spriteEnemigo,xEnemigo,yEnemigo,20,30);//Linea para redibujar a Enemigo
+
+                var imagenActual = posiciones[0];//imagen actual del movimiento del personaje
+                contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 15, 30, xmario, ymario, 15, 30);//se reedibuja el personaje 
+
+                //SALTO
             
-        if ((xmario>xEnemigo-15 && xmario<xEnemigo+20) && (ymario<=yEnemigo && ymario>=yEnemigo-30)){vida=false}
-            fotofondo();
-            enemigo();
-            movene();
-
-            contexto.drawImage(spriteEnemigo,xEnemigo,yEnemigo,20,30);
-
-            var imagenActual = posiciones[indiceAnimacion];//imagen actual del movimiento del personaje
-            contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 15, 30, xmario, ymario, 15, 30);//se reedibuja el personaje 
-
-            //SALTO
-            
-            if (vida==true){
-                ymario=ymario+0.25//Velocidad de caida (0.25)
-                if (ymario>piso){
-                    ymario=piso
-                    salto=false
+                if (vida==true){
+                    ymario=ymario+0.25//Velocidad de caida (0.25)
+                    if (ymario>piso){
+                        ymario=piso
+                        salto=false
                 
-            }
-        }
+                    }       
+                }
         
-
-            //TIEMPO ENTRE CUADRO Y CUADRO
-
-            var esteCuadro = new Date().getTime();//se crea la variable esteCuadro y guarda el tiempo de inicio del primer cuadro
-            var delta = (esteCuadro - ultimoCuadro)/10000;//se crea la variable delta, en ella se calcula el tiempo entre el primer cuadro y el ultimo cuadro
-            ultimoCuadro = esteCuadro;//se asigna esteCuadro al ultimoCuadro
-            tiempoAcumulado += delta;//a tiempoAcumulado se le suma delta es = a tiempoAcumulado = tiempoAcumulado + delta
-            
+                
             //console.log("ymario",ymario);
             //console.log("xmario",xmario);
-            console.log("xenemigo",xEnemigo);
+            //console.log("xenemigo",xEnemigo);
             //console.log("vida",vida)
+            }
+            else{//Esto sucederia si mario muere, se llena la pantalla de color
+                contexto.fillStyle = 'lightblue';
+            }
         }
-    else{
-        contexto.fillRect(0, 0, 640, 480);
-        contexto.fillStyle = 'lightblue';
-        }
-    }
 
     </script>
 
